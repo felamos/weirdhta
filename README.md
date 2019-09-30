@@ -5,7 +5,7 @@ A Python-based basic tool for creating undetectable hta file.
 ```
 python3 weirdhta.py 10.10.10.10 4444
 or
-python3 weirdhta.py 10.10.10.10 4444 --nc (if normal one don't work)
+python3 weirdhta.py 10.10.10.10 4444 --nc (for powercat)
 ```
 
 ### Screenshots
