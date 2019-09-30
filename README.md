@@ -10,7 +10,7 @@ python3 weirdhta.py 10.10.10.10 4444
 Running via browser:
 
 
-![Script Image](https://i.imgur.com/mb8xvCq.png)
+![Script Image](https://i.imgur.com/LCo3Ivb.png)
 
 ![Script Image](https://i.imgur.com/oE0MtYO.png)
 
