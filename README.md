@@ -19,4 +19,4 @@ Running via browser:
 
 Running via cli:
 
-![](https://i.imgur.com/xYfALz2.gifv)
+![](https://i.imgur.com/xYfALz2.gif)
