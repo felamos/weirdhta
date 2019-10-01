@@ -3,7 +3,7 @@ A Python-based basic tool for creating undetectable hta file.
 
 
 ```
-python3 --help
+python3 weirdhta.py --help
 ```
 
 ### Screenshots
