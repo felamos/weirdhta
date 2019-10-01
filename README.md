@@ -1,5 +1,5 @@
 # weirdhta
-A Python-based basic tool for creating undetectable hta file.
+A Python-based basic tool for creating hta file with Evading AV.
 
 
 ```
