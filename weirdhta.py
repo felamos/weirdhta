@@ -16,7 +16,7 @@ def Main():
     parser.add_argument("-s","--smb", help="execute nc.exe via smb", action="store_true")
     parser.add_argument("-n","--normal", help="normal powershell rev", action="store_true")
     parser.add_argument("-c", "--command", help="Run your custom command")
-    parser.add_argument("-nc","--powercat", help="use powercat.ps1 (if powershell don't work)", action="store_true")
+    parser.add_argument("-nc","--powercat", help="use powercat.ps1", action="store_true")
     args = parser.parse_args()
 
     def reverse_shell(ip, port):
