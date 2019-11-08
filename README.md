@@ -1,4 +1,4 @@
-# weirdhta
+# WeirdHTA
 A Python-based basic tool for creating hta file with Evading AV.
 
 
