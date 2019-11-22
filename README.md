@@ -13,7 +13,7 @@ Restful API : https://enigmatic-shore-46592.herokuapp.com/api/weirdhta
 
 ![Script Image](https://i.imgur.com/JZpcpXk.png)
 
-You gonna get something like this
+You will get something like this
 
 ![Script Image](https://i.imgur.com/QarGaIR.png)
 
