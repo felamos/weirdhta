@@ -126,4 +126,7 @@ if __name__ == "__main__":
         """
         print(banner)
     banner()
-    Main()
+    try:
+        Main()
+    except Exception as e:
+        sys.exit("Something went wrong")
