@@ -10,9 +10,6 @@ import random
 import sys
 
 def Main():
-
-
-
     def menu():
         print("""
 1) Powershell Reverse Shell.
@@ -24,8 +21,6 @@ def Main():
 
     def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
         return ''.join(random.choice(chars) for _ in range(size))
-
-
 
     def body(content):
         body = f"""<html>
