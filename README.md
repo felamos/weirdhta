@@ -1,10 +1,11 @@
 # WeirdHTA
 A Python-based basic tool for creating hta file with Evading AV.
 
-
 ```
 python3 weirdhta.py --help
 ```
+
+UPDATING.
 
 ### Screenshots
 Running via browser:
@@ -20,8 +21,3 @@ Running via browser:
 Running via cli:
 
 ![](https://i.imgur.com/xYfALz2.gif)
-
-smb:
-
-![Script Image](https://i.imgur.com/UVgKzpo.png)
-![](https://i.imgur.com/4orNAgX.gif)
