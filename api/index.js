@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+
 var JavaScriptObfuscator = require('javascript-obfuscator');
 app.use(express.json());
 

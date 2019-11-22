@@ -62,7 +62,7 @@ def Main():
         return body
 
     def encrypt(payload):
-        api_url = "http://127.0.0.1:4000/api/weirdhta"
+        api_url = "https://enigmatic-shore-46592.herokuapp.com/api/weirdhta"
         data = r"""{"code" : "%s"}""" % (payload.decode())
         header = {"Content-Type": "application/json"}
         r = requests.post(api_url, headers=header, data=data)
