@@ -1,0 +1,19 @@
+{
+  "name": "weirdhta",
+  "version": "1.0.0",
+  "description": "RESTAPI for weirdhta",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felamos/weirdhta.git"
+  },
+  "author": "felamos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felamos/weirdhta/issues"
+  },
+  "homepage": "https://github.com/felamos/weirdhta#readme"
+}
