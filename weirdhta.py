@@ -87,7 +87,7 @@ def Main():
         print("[*] Written test.hta")
 
     elif option == 2:
-        print("[*] Type your code... ")
+        print("[*] Type your command... ")
         print("")
         cmd = input("> ")
         cmd = cmd.replace("\\" , "\\\\")
