@@ -13,7 +13,7 @@ def Main():
     def menu():
         print("""
 1) Powershell Reverse Shell.
-2) Custom Command.
+2) Custom Command. "Works much better"
         """)
 
     menu()
