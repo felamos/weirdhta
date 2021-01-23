@@ -61,6 +61,10 @@ def Main():
         data = r"""{"code" : "%s"}""" % (payload.decode())
         header = {"Content-Type": "application/json"}
         r = requests.post(api_url, headers=header, data=data)
+        if r.status_code != "200":
+            print("Encryption failed: %s (%s)." % (r.reason, r.status_code))
+            print("Make sure that \"%s\" is working." % api_url)
+            sys.exit()
         return r.text
 
     def powershell(ip, port):
