@@ -1,7 +1,7 @@
 # WeirdHTA
 
 
-A python tool to create obfuscated HTA script.
+A tool to create obfuscated HTA script.
 
 ```
 git clone https://github.com/felamos/weirdhta
