@@ -12,7 +12,7 @@ node run.js
 
 ```
 node run.js 
-[+] Usage: node /opt/oldhta/run.js "CMD"
+[+] Usage: node /opt/weirdhta/run.js "CMD"
 ```
 
 ## Issues
